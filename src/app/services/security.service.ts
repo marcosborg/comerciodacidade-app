@@ -26,8 +26,8 @@ export class SecurityService {
     await Preferences.remove({ key: key });
   };
 
-  url: string = 'https://comerciodacidade.pt/api/';
-  //url: string = 'http://127.0.0.1:8000/api/';
+  //url: string = 'https://comerciodacidade.pt/api/';
+  url: string = 'http://127.0.0.1:8000/api/';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -93,21 +93,11 @@ export class SecurityService {
   }
 
   shopProductsBySubcategoryProduct(data: any) {
-    let httpOptions = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + data.access_token
-      })
-    };
-    return this.http.get(this.url + 'v1/shopProductsBySubcategoryProduct/' + data.id, httpOptions);
+    return this.http.get(this.url + 'shopProductsBySubcategoryProduct/' + data.id);
   }
 
   shopServicesBySubcategoryProduct(data: any) {
-    let httpOptions = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + data.access_token
-      })
-    };
-    return this.http.get(this.url + 'v1/shopServicesBySubcategoryProduct/' + data.id, httpOptions);
+    return this.http.get(this.url + 'shopServicesBySubcategoryProduct/' + data.id);
   }
 
   paginatedModel(data: any) {

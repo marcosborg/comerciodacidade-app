@@ -123,7 +123,6 @@ export class ProductsPage implements OnInit {
         });
       } else {
         let data = {
-          access_token: this.access_token,
           id: id,
         }
         this.securityService.shopProductsBySubcategoryProduct(data).subscribe((resp) => {
