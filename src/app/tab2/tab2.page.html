@@ -1,0 +1,148 @@
+<ion-header>
+  <ion-toolbar color="warning">
+    <ion-title>
+      <img src="../../assets/icon.png" style="max-width: 30px;">
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="light" (click)="logout()"><ion-icon slot="icon-only" name="log-out"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-cart-button></app-cart-button>
+  <ion-segment [(ngModel)]="segment">
+    <ion-segment-button value="purchases">
+      <ion-label>Compras</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="schedules">
+      <ion-label>Agendamentos</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-card *ngIf="segment === 'purchases'">
+    <ion-card-header>
+      Compras
+    </ion-card-header>
+    <ion-list>
+      <ion-item *ngFor="let purchase of purchases" detail="true" button (click)="openPurchase(purchase.id)">
+        <ion-thumbnail slot="start">
+          <img
+            src="{{ purchase.product.photos.length > 0 ? purchase.product.photos[0].original_url : 'https://ionicframework.com/docs/img/demos/thumbnail.svg' }}" />
+        </ion-thumbnail>
+        <ion-label class="ion-text-wrap">
+          <p><strong>{{ purchase.product.shop_product_categories[0].company.name }}</strong></p>
+          <p>({{ purchase.qty }} x {{ purchase.name }})</p>
+          <p>€ {{ purchase.total }}</p>
+          <p>{{ purchase.created_at }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-modal [isOpen]="isPurchaseModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Compra</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="setIsPurchaseModalOpen(false)">Fechar</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>{{ purchase.name }}</ion-card-title>
+              <ion-card-subtitle>
+                <div><ion-icon name="storefront-outline"></ion-icon> {{
+                  purchase.product.shop_product_categories[0].company.name }}
+                </div>
+                <div><ion-icon name="location-outline"></ion-icon> {{
+                  purchase.product.shop_product_categories[0].company.location }}</div>
+                <div><ion-icon name="cart-outline"></ion-icon> {{ purchase.qty }} X €{{ purchase.price }}</div>
+              </ion-card-subtitle>
+              <h1><small>€</small>{{ purchase.total }}</h1>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="ion-margin-top">
+                <p><ion-button size="small" shape="round" fill="outline" (click)="goPurchaseCompany()">Empresa</ion-button></p>
+                <p><ion-button size="small" shape="round" fill="outline" (click)="goPurchaseProduct()">Produto</ion-button></p>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-content>
+        <!--
+        <ion-footer>
+          <ion-toolbar color="danger">
+            <ion-button expand="full" size="small" fill="clear" color="light" size="large"
+              (click)="cancelPurchase()">Cancelar</ion-button>
+          </ion-toolbar>
+        </ion-footer>
+        -->
+      </ng-template>
+    </ion-modal>
+  </ion-card>
+
+  <ion-card *ngIf="segment === 'schedules'">
+    <ion-card-header>
+      Agendamentos
+    </ion-card-header>
+    <ion-list>
+      <ion-item *ngFor="let schedule of schedules" detail="true" button (click)="openSchedule(schedule.id)">
+        <ion-thumbnail slot="start">
+          <img
+            src="{{ schedule.service.photos.length > 0 ? schedule.service.photos[0].original_url : 'https://ionicframework.com/docs/img/demos/thumbnail.svg' }}" />
+        </ion-thumbnail>
+        <ion-label class="ion-text-wrap">
+          <p><strong>{{ schedule.service_employee.shop_company.company.name }}</strong></p>
+          <p>({{ schedule.service_employee.name }})</p>
+          <p>{{ schedule.service.name }}</p>
+          <p>{{ schedule.start_time }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-modal [isOpen]="isScheduleModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Marcação</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="setIsScheduleModalOpen(false)">Fechar</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>{{ schedule.service.name }}</ion-card-title>
+              <ion-card-subtitle>
+                <div><ion-icon name="time-outline"></ion-icon> {{ schedule.service.service_duration.name }}</div>
+                <div><ion-icon name="storefront-outline"></ion-icon> {{ schedule.service.shop_company.company.name }}
+                </div>
+                <div><ion-icon name="location-outline"></ion-icon> {{ schedule.service.shop_company.shop_location.name
+                  }}
+                </div>
+              </ion-card-subtitle>
+              <h1><small>€</small>{{ schedule.service.price }}</h1>
+            </ion-card-header>
+            <ion-card-content>
+              <p>Agendado para <strong>{{ date }}</strong> das <strong>{{ startHoursAndMinutes }}</strong> às
+                <strong>{{ endHoursAndMinutes }}</strong> com <strong>{{ schedule.service_employee.name }}</strong>
+              </p>
+              <div class="ion-margin-top">
+                <p><ion-button size="small" shape="round" fill="outline" (click)="goScheduleCompany()">Empresa</ion-button></p>
+                <p><ion-button size="small" shape="round" fill="outline" (click)="goScheduleService()">Serviço</ion-button></p>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-content>
+        <ion-footer>
+          <ion-toolbar color="danger">
+            <ion-button expand="full" size="small" fill="clear" color="light" size="large"
+              (click)="cancelSchedule()">Cancelar</ion-button>
+          </ion-toolbar>
+        </ion-footer>
+      </ng-template>
+    </ion-modal>
+  </ion-card>
+
+</ion-content>

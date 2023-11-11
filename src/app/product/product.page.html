@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar color="warning">
+    <ion-buttons slot="start">
+      <ion-back-button color="light" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <img src="../../assets/icon.png" style="max-width: 30px;">
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="light" (click)="logout()"><ion-icon slot="icon-only" name="log-out"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-cart-button></app-cart-button>
+  <ion-card>
+    <swiper-container *ngIf="product" [loop]="true" pagination="true" zoom="true">
+      <swiper-slide *ngFor="let photo of product.data.photos">
+        <div class="swiper-zoom-container">
+          <img src="{{ photo.original_url }}">
+        </div>
+      </swiper-slide>
+      <div class="swiper-pagination"></div>
+    </swiper-container>
+    <ion-card-header *ngIf="product">
+      <ion-card-title>{{ product.data.name }}</ion-card-title>
+      <h1 *ngIf="!product.data.sales_price"><small>€</small>{{ product.data.price }}</h1>
+      <h1 *ngIf="product.data.sales_price"><s><small>€{{ product.data.price }}</small></s><ion-text class="ion-margin-start"><small>€</small>{{ product.data.sales_price }}</ion-text></h1>
+      <ion-segment [(ngModel)]="segment">
+        <ion-segment-button value="variations" *ngIf="product.data.shop_product_variations.length > 0">
+          <ion-label>Variações</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="features">
+          <ion-label>Caracteristicas</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="about">
+          <ion-label>Sobre</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-card-header>
+
+    <ion-card-content *ngIf="product">
+      <div *ngIf="segment === 'variations' && product.data.shop_product_variations.length > 0">
+        <ion-radio-group [(ngModel)]="shop_product_index">
+          <ion-radio *ngFor="let variation of product.data.shop_product_variations; let i = index" labelPlacement="start" value="{{ i }}">
+            {{ variation.name }} <ion-note>(€ {{ variation.price }})</ion-note>
+          </ion-radio>
+        </ion-radio-group>
+      </div>
+      <div *ngIf="segment === 'features'">
+        <ion-list>
+          <ion-item *ngFor="let feature of product.data.shop_product_features">
+            <ion-label>{{ feature.name }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+      <div *ngIf="segment === 'about'">
+        <div [innerHtml]="product.data.description" class="ion-margin-bottom"></div>
+        <ion-button *ngIf="product.data.attachment" target="_system" href="{{ product.data.attachment.original_url }}">{{ product.data.attachment_name }}</ion-button>
+        <ion-button *ngIf="product.data.youtube" target="_system" href="https://www.youtube.com/watch?v={{ product.data.youtube }}">Vídeo</ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="success">
+    <ion-button expand="full" fill="clear" color="light" size="large" (click)="order()">Comprar</ion-button>
+  </ion-toolbar>
+</ion-footer>

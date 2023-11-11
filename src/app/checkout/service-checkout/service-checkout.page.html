@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar color="warning">
+    <ion-buttons slot="start">
+      <ion-back-button text="" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <img src="../../assets/icon.png" style="max-width: 30px;">
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="light" (click)="logout()"><ion-icon slot="icon-only" name="log-out"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="employee && pages">
+  <ion-card>
+    <ion-card-header *ngIf="service">
+      <ion-card-title>{{ service.data.name }}</ion-card-title>
+      <ion-card-subtitle>
+        <div><ion-icon name="time-outline"></ion-icon> {{ service.data.service_duration.name }}</div>
+        <div><ion-icon name="storefront-outline"></ion-icon> {{ service.data.shop_company.company.name }}</div>
+        <div><ion-icon name="location-outline"></ion-icon> {{ service.data.shop_company.shop_location.name }}</div>
+      </ion-card-subtitle>
+      <h1><small>€</small>{{ service.data.price }}</h1>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Agendar para <strong>{{ date }}</strong> das <strong>{{ startHoursAndMinutes }}</strong> às <strong>{{
+          endHoursAndMinutes }}</strong> com <strong>{{ employee.data.name }}.</strong></p>
+    </ion-card-content>
+  </ion-card>
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ pageTitle }}</ion-title>
+          <ion-buttons slot="start">
+            <ion-button (click)="close()">Fechar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <div [innerHtml]="pageContent"></div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+<ion-footer *ngIf="employee && pages">
+  <ion-toolbar *ngIf="!allChecked">
+    <ion-list id="popover">
+      <ion-item *ngFor="let page of pages" detail="true" button="true" (click)="openModal(page)">
+        <ion-label><ion-note>{{ page.title }}</ion-note></ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-toolbar>
+  <ion-toolbar color="success">
+    <ion-button expand="full" fill="clear" color="light" size="large" (click)="finish()">Concluir</ion-button>
+  </ion-toolbar>
+</ion-footer>

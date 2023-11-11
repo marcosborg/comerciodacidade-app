@@ -1,0 +1,19 @@
+swiper-container {
+    height: 350;
+}
+
+swiper-slide img {
+    display: block;
+    margin: 0 auto;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+ion-segment-button {
+    text-transform: initial;
+}
+
+ion-radio {
+    padding: 3vw 0;
+    display: block;
+}

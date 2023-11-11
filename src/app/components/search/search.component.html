@@ -1,0 +1,12 @@
+<ion-searchbar animated="true" placeholder="Procurar" show-cancel-button="focus" (ionInput)="searchBar()" (ionCancel)="cancel()" (ionClear)="cancel()" [(ngModel)]="search"></ion-searchbar>
+<ion-list>
+    <ion-item detail="true" button *ngFor="let result of results" (click)="goAction(result.type, result.id)">
+        <ion-thumbnail slot="start">
+            <ion-img src="{{ result.image ? result.image : 'https://ionicframework.com/docs/img/demos/thumbnail.svg' }}"></ion-img>
+        </ion-thumbnail>
+        <ion-label>
+            <h3>{{ result.name }}</h3>
+            <p>{{ result.more }}</p>
+        </ion-label>
+    </ion-item>
+</ion-list>

@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar color="warning">
+    <ion-buttons slot="start">
+      <ion-back-button color="light" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <img src="../../assets/icon.png" style="max-width: 30px;">
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="light" (click)="logout()"><ion-icon slot="icon-only" name="log-out"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <app-cart-button></app-cart-button>
+  <app-search></app-search>
+  <ion-card *ngIf="category">
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-label>
+          <h2>{{ category.name }}</h2>
+          <p>{{ category.company.name }}</p>
+        </ion-label>
+        <ion-button *ngIf="subcategories" (click)="showFilter()" shape="round" fill="outline"><ion-icon
+            name="filter-outline"></ion-icon></ion-button>
+      </ion-item>
+      <ion-segment [scrollable]="true" value="0" *ngIf="filter && subcategories" (ionChange)="segmentChanged($event)">
+        <ion-segment-button value="0">
+          Todos
+        </ion-segment-button>
+        <ion-segment-button value="{{ subcategory.id }}" *ngFor="let subcategory of subcategories">
+          {{ subcategory.name }}
+        </ion-segment-button>
+      </ion-segment>
+      <ion-segment [(ngModel)]="segment" *ngIf="products.length > 0 && services.length > 0">
+        <ion-segment-button value="products">
+          <ion-label>Produtos</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="services">
+          <ion-label>Serviços</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="products.length > 0 && segment === 'products'">
+    <ion-row>
+      <ion-col size="6" *ngFor="let product of products">
+        <div class="clickable" (click)="goProduct(product.id)">
+          <ion-chip [outline]="true" [disabled]="true" *ngIf="!product.sales_price">€{{ product.price }}</ion-chip>
+          <ion-chip [outline]="true" [disabled]="true" *ngIf="product.sales_price"><s>€{{ product.price }}</s><ion-text class="ion-padding-start">€{{ product.sales_price }}</ion-text></ion-chip>
+          <img
+            src="{{ product.photos.length > 0 ? product.photos[0].original_url : 'https://ionicframework.com/docs/img/demos/thumbnail.svg' }}" />
+          <p>{{ product.name }}</p>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-infinite-scroll *ngIf="products_next_page_url" (ionInfinite)="onIonProductsInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ion-card>
+  <ion-card *ngIf="services.length > 0 && segment === 'services'">
+    <ion-list>
+      <ion-item *ngFor="let service of services" detail="true" button (click)="goService(service.id)">
+        <ion-thumbnail slot="start">
+          <img src="{{ service.photos.length > 0 ? service.photos[0].original_url : 'https://ionicframework.com/docs/img/demos/thumbnail.svg' }}" />
+        </ion-thumbnail>
+        <ion-label class="ion-text-wrap">
+          <p>{{ service.name }}</p>
+          <ion-chip [outline]="true" [disabled]="true">€ {{ service.price }}</ion-chip>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-infinite-scroll *ngIf="services_next_page_url" (ionInfinite)="onIonServicesInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ion-card>
+
+</ion-content>

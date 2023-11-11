@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar color="warning">
+    <ion-buttons slot="start">
+      <ion-back-button text="" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <img src="../../assets/icon.png" style="max-width: 30px;">
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="light" (click)="logout()"><ion-icon slot="icon-only" name="log-out"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="product">
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ product.name }} <small *ngIf="product_variation_name">({{ product_variation_name
+          }})</small></ion-card-title>
+      <ion-card-subtitle>
+        <div><ion-icon name="storefront-outline"></ion-icon> {{ product.shop_product_categories[0].company.name }}
+        </div>
+        <div><ion-icon name="location-outline"></ion-icon> {{ product.shop_product_categories[0].company.location
+          }}</div>
+      </ion-card-subtitle>
+      <h1><small>€</small>{{ product_variation_name ? product_variation.price : product.price }} <small>{{
+          product.tax.name }}</small></h1>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Quantidade</p>
+      <ion-grid>
+        <ion-row>
+          <ion-col class="ion-no-padding">
+            <ion-button color="secondary" expand="block" class="custom-button"
+              (click)="decreaseQuantity()">-</ion-button>
+          </ion-col>
+          <ion-col class="ion-no-padding">
+            <ion-input color="secondary" fill="outline" type="number" min="1" [(ngModel)]="qty"
+              class="custom-input"></ion-input>
+          </ion-col>
+          <ion-col class="ion-no-padding">
+            <ion-button color="secondary" expand="block" class="custom-button"
+              (click)="increaseQuantity()">+</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-item class="ion-margin-top">
+        <ion-label>
+          Total
+        </ion-label>
+        <h1><small>€</small>{{ total.toFixed(2) }} <small>{{
+            product.tax.name }}</small></h1>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="success">
+    <ion-button *ngIf="access_token" expand="full" fill="clear" color="light" size="large" (click)="finish()">Adicionar
+      ao
+      carrinho</ion-button>
+    <ion-button *ngIf="!access_token" expand="full" fill="clear" color="light" size="large"
+      (click)="router.navigateByUrl('login')">Login para adicionar ao carrinho</ion-button>
+  </ion-toolbar>
+</ion-footer>

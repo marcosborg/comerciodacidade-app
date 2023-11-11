@@ -1,0 +1,20 @@
+small {
+    font-size: 12px;
+}
+
+.custom-input {
+    text-align: center;
+    min-height: 45px;
+    --border-radius: 0;
+}
+
+ion-button {
+    padding: 0;
+    margin: 0;
+    height: 45px;
+}
+
+ion-button.custom-button {
+    --border-radius: 0;
+    --box-shadow: none;
+}

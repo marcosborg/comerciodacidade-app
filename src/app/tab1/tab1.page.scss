@@ -1,0 +1,35 @@
+ion-card {
+    --background: #000;
+    --color: #9efff0;
+}
+
+ion-card-title {
+    --color: #52ffe4;
+    font-size: 5vw;
+}
+
+ion-card-subtitle {
+    --color: #d1fff8;
+}
+
+.background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    background-size: cover;
+}
+
+ion-card-header {
+    padding-bottom: 100%;
+}
+
+ion-content {
+    --swiper-navigation-color: var(--ion-color-warning, #ffc409);
+}
+
+swiper-slide {
+    ion-card {
+        height: 50vw;
+    }
+}

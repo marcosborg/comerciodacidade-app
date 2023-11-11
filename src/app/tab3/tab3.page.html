@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar color="warning">
+    <ion-title>
+      <img src="../../assets/icon.png" style="max-width: 30px;">
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="light" (click)="logout()"><ion-icon slot="icon-only" name="log-out"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-cart-button></app-cart-button>
+  <ion-card>
+    <ion-card-header>
+      Utilizador
+    </ion-card-header>
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Nome</ion-label>
+        <ion-input [(ngModel)]="name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input disabled value="{{ email }}"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Contacto</ion-label>
+        <ion-input [(ngModel)]="phone"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Endereço</ion-label>
+        <ion-textarea [(ngModel)]="address" placeholder="Introduza aqui o seu endereço"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">País</ion-label>
+        <ion-input disabled value="Portugal"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Localidade</ion-label>
+        <ion-input [(ngModel)]="city"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Código postal</ion-label>
+        <ion-input [(ngModel)]="zip"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Número de contribuinte</ion-label>
+        <ion-input [(ngModel)]="vat"></ion-input>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="success">
+    <ion-button expand="full" fill="clear" color="light" size="large" (click)="update()">Atualizar</ion-button>
+  </ion-toolbar>
+  <ion-toolbar color="danger">
+    <ion-button expand="full" size="small" fill="clear" color="light" (click)="askForDelete()">Eliminar conta</ion-button>
+  </ion-toolbar>
+</ion-footer>

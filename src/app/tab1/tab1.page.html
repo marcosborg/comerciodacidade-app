@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar color="warning">
+    <ion-title>
+      <img src="../../assets/icon.png" style="max-width: 30px;">
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="light" (click)="logout()"><ion-icon slot="icon-only" name="log-out"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-cart-button></app-cart-button>
+  <app-search></app-search>
+  <img src="../../assets/banner.png">
+  <swiper-container [loop]="true" [slidesPerView]="2" navigation="true">
+    <swiper-slide *ngFor="let category of categories">
+      <ion-card (click)="goCompanies(category.id)">
+        <div class="background"
+          [ngStyle]="{'background-image': category.image && category.image.original_url ? 'url(' + category.image.original_url + ')' : 'url(https://ionicframework.com/docs/img/demos/card-media.png)'}">
+        </div>
+        <ion-card-header>
+          <ion-card-title>{{ category.name }}</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </swiper-slide>
+  </swiper-container>
+  <swiper-container [loop]="true" [slidesPerView]="2" navigation="true">
+    <swiper-slide *ngFor="let service of services">
+      <ion-card (click)="goService(service.id)">
+        <div class="background"
+          [ngStyle]="{'background-image': service.photos && service.photos[0] ? 'url(' + service.photos[0].original_url + ')' : 'url(https://ionicframework.com/docs/img/demos/card-media.png)'}">
+        </div>
+        <ion-card-header>
+          <ion-card-title>{{ service.name }}</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </swiper-slide>
+  </swiper-container>
+  <swiper-container [loop]="true" [slidesPerView]="2" navigation="true">
+    <swiper-slide *ngFor="let product of products">
+      <ion-card (click)="goProduct(product.id)">
+        <div class="background"
+          [ngStyle]="{'background-image': product.photos && product.photos[0] ? 'url(' + product.photos[0].original_url + ')' : 'url(https://ionicframework.com/docs/img/demos/card-media.png)'}">
+        </div>
+        <ion-card-header>
+          <ion-card-title *ngIf="!product.sales_price">€{{ product.price }}</ion-card-title>
+          <ion-card-title *ngIf="product.sales_price"><s><small>€{{ product.price }}</small></s><br>
+          €{{ product.price }}
+          </ion-card-title>
+          <ion-card-subtitle>{{ product.name }}</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </swiper-slide>
+  </swiper-container>
+</ion-content>

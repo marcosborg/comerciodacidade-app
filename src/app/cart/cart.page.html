@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar color="warning">
+    <ion-buttons slot="start">
+      <ion-back-button text="" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <img src="../../assets/icon.png" style="max-width: 30px;">
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="light" (click)="logout()"><ion-icon slot="icon-only" name="log-out"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Carrinho</ion-card-title>
+      <ion-card-subtitle>Verifique os seus produtos abaixo</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-list>
+      <ion-item-sliding *ngFor="let item of cart">
+        <ion-item-options side="start">
+          <ion-item-option color="primary" (click)="router.navigateByUrl('product/' + item.product_id)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="deleteItem(item)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+        <ion-item detail="true">
+          <ion-label>
+            <h3>{{ item.product_name }}</h3>
+            <p>{{ item.variation }}</p>
+            <p>{{ item.price }}€ X {{ item.quantity }}</p>
+          </ion-label>
+          <ion-note>
+            {{ (item.price * item.quantity) | number:'1.2-2' }}€
+          </ion-note>
+        </ion-item>
+      </ion-item-sliding>
+    </ion-list>
+  </ion-card>
+</ion-content>
+<ion-footer>
+  <ion-toolbar *ngIf="company">
+    <ion-row>
+      <ion-col class="ion-margin">
+        <ion-radio-group [(ngModel)]="delivery_type" [value]="delivery_type" (ionChange)="checkCart()">
+          <ion-radio value="0">Recolha na loja</ion-radio><br />
+          <ion-radio value="1"
+            *ngIf="company.shop_company.delivery_company && company.shop_company.minimum_delivery_value">{{
+            company.shop_company.delivery_company }} <small> ({{ delivery_value }}€)</small></ion-radio>
+        </ion-radio-group>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+  <ion-toolbar class="ion-text-center">
+    <h1>Total: {{ totalAmountWithDelivery | number: '1.2-2' }}€</h1>
+    <ion-note>Confirme o endereço de entrega e volte ao carrinho</ion-note>
+    <ion-button (click)="router.navigateByUrl('tabs/tab3')" size="small" expand="full" fill="clear">Ver
+      endereço</ion-button>
+    <ion-button (click)="deleteCart()" color="danger" size="small" expand="full" fill="clear">Apagar
+      carrinho</ion-button>
+  </ion-toolbar>
+  <ion-toolbar *ngIf="company">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6" *ngIf="company.ifthen_pay && company.ifthen_pay.mbway_key">
+          <ion-img src="../../assets/mbway-logo.png" class="ion-padding" (click)="payMbway()"></ion-img>
+        </ion-col>
+        <ion-col size="6"
+          *ngIf="company.ifthen_pay && !company.ifthen_pay.mbway_key && company.ifthen_pay.simple_mbway_number">
+          <ion-img src="../../assets/mbway-logo.png" class="ion-padding" (click)="paySimpleMbway()"></ion-img>
+        </ion-col>
+        <ion-col size="6" *ngIf="company.ifthen_pay && company.ifthen_pay.mb_key">
+          <ion-img src="../../assets/mb-logo.png" class="ion-padding" (click)="payMb()"></ion-img>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-button size="full"
+      *ngIf="!company.ifthen_pay.mbway_key && !company.ifthen_pay.mbway_key && !company.ifthen_pay.mb_key && !company.ifthen_pay.simple_mbway_number"
+      color="warning" (click)="order('reserva')">Reservar</ion-button>
+  </ion-toolbar>
+</ion-footer>

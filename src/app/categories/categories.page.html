@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar color="warning">
+    <ion-buttons slot="start">
+      <ion-back-button text="" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <img src="../../assets/icon.png" style="max-width: 30px;">
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="light" (click)="logout()"><ion-icon slot="icon-only" name="log-out"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-cart-button></app-cart-button>
+  <app-search></app-search>
+  <ion-card>
+    <ion-card-content *ngIf="company.data">
+      <ion-row>
+        <ion-col size="4">
+          <div class="square-image">
+            <img alt="{{ company.data.name }}"
+              src="{{ company.data.logo ? company.data.logo.original_url : 'https://via.placeholder.com/300x300?text=' + company.data.name }}" />
+          </div>
+        </ion-col>
+        <ion-col class="ion-text-right">
+          <p><strong>{{ company.data.name }}</strong></p>
+          <ion-button size="small" shape="round" fill="outline" class="ion-margin-top" (click)="goCompany(company.data.id)">Sobre ...</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-grid>
+    <ion-row *ngIf="categories.length > 0">
+      <ion-col *ngFor="let category of categories" size="6">
+        <ion-card (click)="goCategory(category.id)" class="categories">
+          <div class="background"
+          [ngStyle]="{'background-image': category.image ? 'url(' + category.image.original_url + ')' : 'url(https://ionicframework.com/docs/img/demos/card-media.png)'}">
+        </div>
+        <ion-card-header class="square">
+          <ion-card-title>{{ category.name }}</ion-card-title>
+        </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
