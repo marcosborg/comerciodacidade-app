@@ -26,8 +26,8 @@ export class SecurityService {
     await Preferences.remove({ key: key });
   };
 
-  //url: string = 'https://comerciodacidade.pt/api/';
-  url: string = 'http://127.0.0.1:8000/api/';
+  url: string = 'https://comerciodacidade.pt/api/';
+  //url: string = 'http://127.0.0.1:8000/api/';
 
   httpOptions = {
     headers: new HttpHeaders({
