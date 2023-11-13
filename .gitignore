@@ -5,3 +5,4 @@ android
 ios
 .angular
 resources/android/**/*
+resources/ios/**/*
