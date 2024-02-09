@@ -36,7 +36,6 @@ export class Tab1Page implements OnInit {
       loading.present();
       this.shopCategories();
     });
-
   }
 
   shopCategories() {
